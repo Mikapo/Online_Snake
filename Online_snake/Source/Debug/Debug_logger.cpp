@@ -5,7 +5,9 @@
 
 Debug_logger::~Debug_logger()
 {
+#ifdef _DEBUG
     write_to_log_file();
+#endif
 }
 
 std::string Debug_logger::get_time_string() const
@@ -42,6 +44,16 @@ void Debug_logger::log(Log_severity severity, Log_type type, std::string_view ms
 
     std::cout << output;
     std::cout.flush();
+}
+
+void Debug_logger::set_severity_enabled(Log_severity severity, bool new_enabled)
+{
+    m_enabled_severities[severity] = new_enabled;
+}
+
+void Debug_logger::set_type_enabled(Log_type type, bool new_enabled)
+{
+    m_enabled_types[type] = new_enabled;
 }
 
 void Debug_logger::write_to_log_file() const

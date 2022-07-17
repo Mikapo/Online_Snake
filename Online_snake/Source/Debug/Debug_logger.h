@@ -16,6 +16,8 @@ class Debug_logger
 public:
     static Debug_logger& get() noexcept;
     void log(Log_severity severity, Log_type type, std::string_view msg);
+    void set_severity_enabled(Log_severity severity, bool new_enabled);
+    void set_type_enabled(Log_type type, bool new_enabled);
     void write_to_log_file() const;
 
 private:
