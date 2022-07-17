@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 
+#include "Debug/Debug_logger.h"
 #include "GL/glew.h"
 #include <GLFW/glfw3.h>
 
@@ -17,104 +18,59 @@ Shader::Shader(std::string_view frag_path, std::string_view fert_path)
     glUseProgram(m_shader_id);
 }
 
-Shader::~Shader() { glDeleteProgram(m_shader_id); }
-
-void Shader::bind() const noexcept { glUseProgram(m_shader_id); }
-
-void Shader::unbind() const noexcept { glUseProgram(0); }
-
-void Shader::set_uniform4f(std::string_view name, float v1, float v2, float v3, float v4)
+Shader::~Shader()
 {
-    const int32_t location = get_uniform_location(name);
-    if (location == -1)
-        return;
-
-    bind();
-    glUniform4f(location, v1, v2, v3, v4);
-    unbind();
+    glDeleteProgram(m_shader_id);
 }
 
-void Shader::set_uniform4fv(std::string_view name, int32_t count, const float* v)
+void Shader::bind() const noexcept
 {
-    if (count == 0)
-        return;
-
-    const int32_t location = get_uniform_location(name);
-    if (location == -1)
-        return;
-
-    bind();
-    glUniform4fv(location, static_cast<GLsizei>(count), v);
-    unbind();
+    glUseProgram(m_shader_id);
 }
 
-void Shader::set_uniform3f(std::string_view name, float v1, float v2, float v3)
+void Shader::unbind() const noexcept
 {
-    const int32_t location = get_uniform_location(name);
-    if (location == -1)
-        return;
-
-    bind();
-    glUniform3f(location, v1, v2, v3);
-    unbind();
+    glUseProgram(0);
 }
 
-void Shader::set_uniform3fv(std::string_view name, int32_t count, const float* v)
+void Shader::call_gl_uniform(int32_t pos, float v1, float v2, float v3, float v4) const noexcept
 {
-    if (count == 0)
-        return;
-
-    const int32_t location = get_uniform_location(name);
-    if (location == -1)
-        return;
-
-    bind();
-    glUniform3fv(location, static_cast<GLsizei>(count), v);
-    unbind();
+    glUniform4f(pos, v1, v2, v3, v4);
 }
 
-void Shader::set_uniform2f(std::string_view name, float v1, float v2)
+void Shader::call_gl_uniform(int32_t pos, int32_t count, const std::vector<std::array<float, 4>> v) const noexcept
 {
-    const int32_t location = get_uniform_location(name);
-    if (location == -1)
-        return;
-
-    bind();
-    glUniform2f(location, v1, v2);
-    unbind();
+    glUniform4fv(pos, static_cast<GLsizei>(count), v.data()->data());
 }
 
-void Shader::set_uniform1f(std::string_view name, float v1)
+void Shader::call_gl_uniform(int32_t pos, float v1, float v2, float v3) const noexcept
 {
-    const int32_t location = get_uniform_location(name);
-    if (location == -1)
-        return;
-
-    bind();
-    glUniform1f(location, v1);
-    unbind();
+    glUniform3f(pos, v1, v2, v3);
 }
 
-void Shader::set_uniform1i(std::string_view name, int32_t v1)
+void Shader::call_gl_uniform(int32_t pos, int32_t count, const std::vector<std::array<float, 3>> v) const noexcept
 {
-    const int32_t location = get_uniform_location(name);
-    if (location == -1)
-        return;
-
-    bind();
-    glUniform1i(location, v1);
-    unbind();
+    glUniform3fv(pos, static_cast<GLsizei>(count), v.data()->data());
 }
 
-void Shader::set_uniform_mat4f(std::string_view name, const glm::mat4& matrix)
+void Shader::call_gl_uniform(int32_t pos, float v1, float v2) const noexcept
 {
-    const int32_t location = get_uniform_location(name);
-    if (location == -1)
-        return;
+    glUniform2f(pos, v1, v2);
+}
 
-    bind();
-    glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]);
-    unbind();
+void Shader::call_gl_uniform(int32_t pos, float v1) const noexcept
+{
+    glUniform1f(pos, v1);
+}
+
+void Shader::call_gl_uniform(int32_t pos, int32_t v1) const noexcept
+{
+    glUniform1i(pos, v1);
+}
+
+void Shader::call_gl_uniform(int32_t pos, const glm::mat4& matrix) const noexcept
+{
+    glUniformMatrix4fv(pos, 1, GL_FALSE, &matrix[0][0]);
 }
 
 int32_t Shader::get_uniform_location(std::string_view name)
@@ -142,9 +98,9 @@ uint32_t Shader::compile_shader(uint32_t type, std::string_view source)
         glGetShaderiv(id, GL_INFO_LOG_LENGTH, &lenght);
         char* message = new char[lenght];
         glGetShaderInfoLog(id, lenght, &lenght, message);
-        std::cout << message;
+        LOG(error, render, "{}", message);
         glDeleteShader(id);
-        throw std::runtime_error(message);
+        delete message;
     }
 
     return id;
@@ -169,14 +125,14 @@ uint32_t Shader::create_shader(std::string_view vertex_shader, std::string_view 
 
 std::string Shader::parse_shader(std::string_view filepath)
 {
-
     std::ifstream stream(filepath.data());
-    std::stringstream ss[1];
+    std::stringstream ss;
     std::string line;
 
     while (getline(stream, line))
     {
-        ss[0] << line << '\n';
+        ss << line << '\n';
     }
-    return ss[0].str();
+
+    return ss.str();
 }

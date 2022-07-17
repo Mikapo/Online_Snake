@@ -2,13 +2,13 @@
 
 #include "Renderer2D.h"
 
+#include "Buffers/Buffers.h"
 #include "GL/glew.h"
 #include "Shading/Shader.h"
-#include "Buffers/Buffers.h"
 
 #include "Debug/Debug_logger.h"
-#include "glm/ext/matrix_transform.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
+#include "glm/ext/matrix_transform.hpp"
 
 void GLAPIENTRY opengl_debug(
     GLenum source​, GLenum type​, GLuint id​, GLenum severity​, GLsizei length​, const GLchar* message​,
@@ -86,19 +86,9 @@ void Renderer2D::init()
     Vertex_buffer_layout Layout;
     Layout.push<float>(2);
 
-    std::vector<float> square_vertices
-    {
-        -0.5,  -0.5f,
-         0.5f, -0.5f,
-         0.5f,  0.5f,
-        -0.5f,  0.5f
-    };
+    std::vector<float> square_vertices{-0.5, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f};
 
-    std::vector<uint32_t> square_indices
-    {
-        0, 1, 2,
-        0, 2, 3
-    };
+    std::vector<uint32_t> square_indices{0, 1, 2, 0, 2, 3};
 
     m_square_buffers = new Buffers(std::move(square_vertices), std::move(square_indices), Layout);
     m_shader = new Shader("Shaders/Shader.frag", "Shaders/Shader.vert");
@@ -109,7 +99,7 @@ void Renderer2D::change_coordinate_system(glm::vec2 min, glm::vec2 max) const
     if (m_shader)
     {
         const glm::mat4 projection = glm::ortho(min.x, max.x, min.y, max.y);
-        m_shader->set_uniform_mat4f("u_projection", projection);
+        m_shader->set_uniform("u_projection", projection);
     }
 }
 
@@ -123,8 +113,8 @@ void Renderer2D::draw_square(glm::vec2 pos, glm::vec2 scale, glm::vec4 color) co
     const glm::mat4 scale_mat = glm::scale(identity, glm::vec3(scale.x, scale.y, 1));
     const glm::mat4 model = translate * scale_mat;
 
-    m_shader->set_uniform_mat4f("u_model", model);
-    m_shader->set_uniform4f("u_color", color.r, color.g, color.b, color.a);
+    m_shader->set_uniform("u_model", model);
+    m_shader->set_uniform("u_color", color.r, color.g, color.b, color.a);
     m_shader->bind();
     m_square_buffers->bind();
 
