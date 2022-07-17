@@ -96,8 +96,8 @@ void Application::render_loop()
         glViewport(0, 0, m_width, m_height);
         glfwPollEvents();
         glDepthMask(GL_TRUE);
-        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
         glClearColor(m_background_color.r, m_background_color.b, m_background_color.g, m_background_color.a);
+        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
         if (m_render_callback)
             m_render_callback->call();
@@ -114,7 +114,7 @@ void Application::cleanup()
     glfwDestroyWindow(m_window);
     glfwTerminate();
 
-    LOG(notification, application, "destroyed window with name {}", m_name);
+    LOG(notification, application, "Destroyed window with name {}", m_name);
 
     m_window = nullptr;
 }

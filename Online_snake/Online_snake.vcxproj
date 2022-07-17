@@ -149,7 +149,6 @@
     <ClInclude Include="Source\Rendering\Buffers\Vertex_buffer_layout.h" />
     <ClInclude Include="Source\Rendering\Renderer_item.h" />
     <ClInclude Include="Source\Rendering\Shading\Shader.h" />
-    <ClInclude Include="Source\Rendering\Texture\Texture_slots.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Rendering\Renderer2D.cpp" />

@@ -1,0 +1,7 @@
+[16:00:34] notification other: Starting snake game 
+[16:00:35] notification application: Created window with name Snake Game 
+[16:00:35] notification render: Initializing 2d renderer 
+[16:00:35] notification render: Compiling shaders Shaders/Shader.frag and Shaders/Shader.vert 
+[16:00:48] notification game: Cleaning up and exiting snake game 
+[16:00:49] notification application: Destroyed window with name Snake Game 
+[16:00:49] notification logger: Writing to log file 

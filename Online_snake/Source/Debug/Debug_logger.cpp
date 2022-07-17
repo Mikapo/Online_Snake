@@ -3,6 +3,11 @@
 #include <ctime>
 #include <fstream>
 
+Debug_logger::~Debug_logger()
+{
+    write_to_log_file();
+}
+
 std::string Debug_logger::get_time_string() const
 {
     using namespace std::chrono;
@@ -41,7 +46,7 @@ void Debug_logger::log(Log_severity severity, Log_type type, std::string_view ms
 
 void Debug_logger::write_to_log_file() const
 {
-    LOG(notification, engine, "Writing to log file");
+    LOG(notification, logger, "Writing to log file");
 
     std::ofstream log_file("Log.txt");
 
@@ -51,7 +56,7 @@ void Debug_logger::write_to_log_file() const
         log_file.close();
     }
     else
-        LOG(error, engine, "Failed to open log file");
+        LOG(error, logger, "Failed to open log file");
 }
 
 bool Debug_logger::is_log_alloved(Log_severity severity, Log_type type)

@@ -74,6 +74,8 @@ Renderer2D::~Renderer2D()
 
 void Renderer2D::init()
 {
+    LOG(notification, render, "Initializing 2d renderer");
+
     glewInit();
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

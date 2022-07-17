@@ -11,6 +11,8 @@
 Shader::Shader(std::string_view frag_path, std::string_view fert_path)
     : m_frag_path(frag_path), m_fert_path(fert_path), m_shader_id(0)
 {
+    LOG(notification, render, "Compiling shaders {} and {}", frag_path, fert_path);
+
     std::string frag_source = parse_shader(frag_path);
     std::string fert_source = parse_shader(fert_path);
 
