@@ -12,7 +12,7 @@ Snake_game::Snake_game()
 
 void Snake_game::start()
 {
-    LOG(notification, other, "Starting snake game");
+    LOG(notification, game, "Starting snake game");
 
     m_logic_thread_stop_flag = false;
     m_logic_thread = std::thread([this] { logic_thread(); });

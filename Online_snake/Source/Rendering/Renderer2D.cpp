@@ -3,10 +3,9 @@
 #include "Renderer2D.h"
 
 #include "Buffers/Buffers.h"
+#include "Debug/Debug_logger.h"
 #include "GL/glew.h"
 #include "Shading/Shader.h"
-
-#include "Debug/Debug_logger.h"
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
 
@@ -63,6 +62,11 @@ void GLAPIENTRY opengl_debug(
     Debug_logger::get().log(log_severity, Log_type::opengl, std::format("{}: {}", source_string, message​));
 }
 
+Renderer2D::Renderer2D()
+{
+    m_projection = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f);
+};
+
 Renderer2D::~Renderer2D()
 {
     if (m_shader)
@@ -96,13 +100,10 @@ void Renderer2D::init()
     m_shader = new Shader("Shaders/Shader.frag", "Shaders/Shader.vert");
 }
 
-void Renderer2D::change_coordinate_system(glm::vec2 min, glm::vec2 max) const
+void Renderer2D::change_coordinate_system(glm::vec2 min, glm::vec2 max)
 {
     if (m_shader)
-    {
-        const glm::mat4 projection = glm::ortho(min.x, max.x, min.y, max.y);
-        m_shader->set_uniform("u_projection", projection);
-    }
+        m_projection = glm::ortho(min.x, max.x, min.y, max.y);
 }
 
 void Renderer2D::draw_square(glm::vec2 pos, glm::vec2 scale, glm::vec4 color) const
@@ -117,6 +118,7 @@ void Renderer2D::draw_square(glm::vec2 pos, glm::vec2 scale, glm::vec4 color) co
 
     m_shader->set_uniform("u_model", model);
     m_shader->set_uniform("u_color", color.r, color.g, color.b, color.a);
+    m_shader->set_uniform("u_projection", m_projection);
     m_shader->bind();
     m_square_buffers->bind();
 
