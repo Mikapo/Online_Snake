@@ -8,6 +8,7 @@
 #include "Shading/Shader.h"
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
+#include <stdexcept>
 
 void GLAPIENTRY opengl_debug(
     GLenum source​, GLenum type​, GLuint id​, GLenum severity​, GLsizei length​, const GLchar* message​,
@@ -106,15 +107,12 @@ void Renderer2D::change_coordinate_system(glm::vec2 min, glm::vec2 max)
         m_projection = glm::ortho(min.x, max.x, min.y, max.y);
 }
 
-void Renderer2D::draw_square(glm::vec2 pos, glm::vec2 scale, glm::vec4 color) const
+void Renderer2D::draw_square(Transform2D transform, glm::vec4 color) const
 {
-    if (!m_shader && !m_square_buffers)
-        return;
+    if (!m_shader || !m_square_buffers)
+        throw std::runtime_error("Renderer2D has not been initialized yet");
 
-    const glm::mat4 identity = glm::mat4(1);
-    const glm::mat4 translate = glm::translate(identity, glm::vec3(pos, 0));
-    const glm::mat4 scale_mat = glm::scale(identity, glm::vec3(scale.x, scale.y, 1));
-    const glm::mat4 model = translate * scale_mat;
+    const glm::mat4 model = calculate_model(transform);
 
     m_shader->set_uniform("u_model", model);
     m_shader->set_uniform("u_color", color.r, color.g, color.b, color.a);
@@ -124,4 +122,14 @@ void Renderer2D::draw_square(glm::vec2 pos, glm::vec2 scale, glm::vec4 color) co
 
     GLsizei IndicesCount = static_cast<GLsizei>(m_square_buffers->get_indices_count());
     glDrawElements(GL_TRIANGLES, IndicesCount, GL_UNSIGNED_INT, nullptr);
+}
+
+glm::mat4 Renderer2D::calculate_model(Transform2D transform) const
+{
+    const glm::mat4 identity = glm::mat4(1);
+    const glm::mat4 translate = glm::translate(identity, glm::vec3(transform.m_location, 0));
+    const glm::mat4 scale = glm::scale(identity, glm::vec3(transform.m_scale, 1));
+    const glm::mat4 rotation = glm::rotate(identity, transform.m_angle, glm::vec3(0, 0, 1));
+
+    return translate * rotation * scale;
 }

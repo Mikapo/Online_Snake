@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Datatypes/Transform.h"
 #include "glm/mat4x4.hpp"
 #include "glm/vec2.hpp"
 #include "glm/vec4.hpp"
@@ -19,9 +20,11 @@ public:
 
     void init();
     void change_coordinate_system(glm::vec2 min, glm::vec2 max);
-    void draw_square(glm::vec2 pos, glm::vec2 scale, glm::vec4 color) const;
+    void draw_square(Transform2D transform, glm::vec4 color) const;
 
 private:
+    glm::mat4 calculate_model(Transform2D transform) const;
+
     Shader* m_shader = nullptr;
     Buffers* m_square_buffers = nullptr;
     glm::mat4 m_projection;

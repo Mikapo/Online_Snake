@@ -21,8 +21,13 @@ void Snake_game::start()
 
 void Snake_game::render_thread()
 {
-    m_renderer.draw_square({10.0f, 10.0f}, {8.0f, 8.0f}, {0.8f, 0.0f, 0.0f, 1.0f});
-    m_renderer.draw_square({25.0f, 20.0f}, {8.0f, 8.0f}, {0.0f, 0.8f, 0.0f, 1.0f});
+    Transform2D transform({10.0f, 10.0f}, 0.0f, {8.0f, 8.0f});
+
+    m_renderer.draw_square(transform, {0.8f, 0.0f, 0.0f, 1.0f});
+
+    transform.m_location = {20.0f, 20.0f};
+    transform.m_angle = 45.0f;
+    m_renderer.draw_square(transform, {0.0f, 0.8f, 0.0f, 1.0f});
 }
 
 void Snake_game::logic_thread()

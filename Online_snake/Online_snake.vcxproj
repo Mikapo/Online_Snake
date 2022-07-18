@@ -135,6 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Datatypes\Transform.h" />
     <ClInclude Include="Source\Rendering\Renderer2D.h" />
     <ClInclude Include="Source\Core\Snake_game.h" />
     <ClInclude Include="Source\Core\Application.h" />
