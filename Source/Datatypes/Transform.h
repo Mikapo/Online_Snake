@@ -9,8 +9,6 @@ struct Transform2D
     {
     }
 
-    float get_dist(glm::vec2 other_loc); // this should be in the Location2D class but it's okey for this project
-
     glm::vec2 m_location = {0.0f, 0.0f};
     float m_angle = 0.0f;
     glm::vec2 m_scale = {1.0f, 1.0f};
