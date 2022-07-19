@@ -1,0 +1,71 @@
+[33mcommit af2dedf89d9a2b5771a4a269586a2e54dda46931[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: Xfran1998 <seafran@alumni.uv.es>
+Date:   Tue Jul 19 21:20:56 2022 +0200
+
+    template for making the GameInstance class with all surrounding classes needed
+
+[33mcommit 0ff99e87b4eaf0c81a3f6fc1576774decd335552[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Mikapo <30571759+Mikapo@users.noreply.github.com>
+Date:   Mon Jul 18 14:33:48 2022 +0300
+
+    added transform datatype
+
+[33mcommit 4f0b29de029cabdbd4cc7344190dfcb7604648f3[m
+Author: Mika Peltola <30571759+Mikapo@users.noreply.github.com>
+Date:   Mon Jul 18 12:55:08 2022 +0300
+
+    Fixed typo in readme
+
+[33mcommit 7d51ec7b3209de5dbe8288c02f32cb37a0d29694[m
+Author: Mika Peltola <30571759+Mikapo@users.noreply.github.com>
+Date:   Mon Jul 18 12:54:17 2022 +0300
+
+    added README
+
+[33mcommit 6898810e13222938ad4691f8a7e6caabd53a3cbd[m
+Author: Mikapo <30571759+Mikapo@users.noreply.github.com>
+Date:   Mon Jul 18 12:07:16 2022 +0300
+
+    removed log and added it to gitignore
+
+[33mcommit cf732b7f48edbd76c23c6501f148179523da1694[m
+Author: Mikapo <30571759+Mikapo@users.noreply.github.com>
+Date:   Mon Jul 18 11:59:18 2022 +0300
+
+    fixed bug that causes crash when changing coordinate system from other thread
+
+[33mcommit d07f368d33b1eeb6bcc9ebe01a77a22aa6fa9458[m
+Author: Mikapo <30571759+Mikapo@users.noreply.github.com>
+Date:   Sun Jul 17 16:14:57 2022 +0300
+
+    added ability to disable spesific logs
+
+[33mcommit cbed36c4cf3edcf6af252a05a7d4ff631a6181a3[m
+Author: Mikapo <30571759+Mikapo@users.noreply.github.com>
+Date:   Sun Jul 17 16:02:52 2022 +0300
+
+    removed non used texture slots and added more logging
+
+[33mcommit 025e19d7876e9732242a72729921a4dc63145bb0[m
+Author: Mikapo <30571759+Mikapo@users.noreply.github.com>
+Date:   Sun Jul 17 13:33:39 2022 +0300
+
+    improved shader code
+
+[33mcommit 1ee869aac5b9d3f2b396027d05f5a9ae87ac0198[m
+Author: Mikapo <30571759+Mikapo@users.noreply.github.com>
+Date:   Sun Jul 17 12:43:40 2022 +0300
+
+    added clang format and fixed gitignore
+
+[33mcommit 724fe46f6b4d183664691b9da27f1439f0228de6[m
+Author: Mikapo <30571759+Mikapo@users.noreply.github.com>
+Date:   Sun Jul 17 12:27:02 2022 +0300
+
+    added libraries
+
+[33mcommit f31bb00cb6a4a1cefa05f1e842e8e3066ecf1782[m
+Author: Mikapo <30571759+Mikapo@users.noreply.github.com>
+Date:   Sun Jul 17 12:24:16 2022 +0300
+
+    Initial commit
