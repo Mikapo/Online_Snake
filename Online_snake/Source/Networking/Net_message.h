@@ -53,7 +53,7 @@ namespace Networking
 			const size_t size = m_body.size();
 			m_body.resize(size + sizeof(Data_type));
 
-			gsl::span body_span = {m_body.data(), m_body.size()};
+			const gsl::span body_span = {m_body.data(), m_body.size()};
 			std::memcpy(&body_span[size], &data, sizeof(Data_type));
 
 			m_header.m_size = gsl::narrow<uint32_t>(m_body.size());
@@ -68,7 +68,7 @@ namespace Networking
 
 			const size_t new_size = m_body.size() - sizeof(Data_type);
 
-			gsl::span body_span = { m_body.data(), m_body.size() };
+			const gsl::span body_span = { m_body.data(), m_body.size() };
 			std::memcpy(&data, &body_span[new_size], sizeof(Data_type));
 
 			m_body.resize(new_size);
@@ -120,7 +120,49 @@ namespace Networking
 
 	private:
 		Net_message_header<Id_enum_type> m_header;
-		std::vector<char> m_body;
+		std::vector<char> m_body = {};
 	};
+
+	template<typename Id_enum_type>
+	class Connection;
+
+	template<Id_enum_concept Id_enum_type>
+	class Owned_message
+	{
+	public:
+		Owned_message(Id_enum_type id) noexcept
+			: m_message(id) {}
+
+		std::shared_ptr<Connection<Id_enum_type>> get_owner() const
+		{
+			return m_owner;
+		}
+
+		Net_message<Id_enum_type>& get() noexcept
+		{
+			return m_message;
+		}
+
+		friend std::ostream& operator<<(std::ostream& stream, const Owned_message& message)
+		{
+			return stream << message.m_message;
+		}
+
+		bool operator==(const Owned_message& other) const noexcept
+		{
+			return m_owner == other.m_owner && m_message == other.m_message;
+		}
+
+		bool operator!=(const Owned_message& other) const noexcept
+		{
+			return !(*this == other);
+		}
+
+
+	private:
+		std::shared_ptr<Connection<Id_enum_type>> m_owner = nullptr;
+		Net_message<Id_enum_type> m_message;
+	};
+
 };
 
